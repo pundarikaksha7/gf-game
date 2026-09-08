@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Ananya Adventures</title>
+    <title>Super Ananya</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -389,7 +389,7 @@
 
     <script>
     /*
-     * Ananya Adventures — Step 1: Move and Jump
+     * Super Ananya — Step 1: Move and Jump
      * A 2D side-scrolling beat-em-up platformer.
      * This step implements basic player movement, jumping, gravity,
      * ground/platform collision, and a camera that follows the player.
@@ -986,9 +986,28 @@
         let motorAudioContext = null;
         let motorOscillator = null;
         let motorGain = null;
+        // Reuse a small pool of audio elements instead of allocating a new Audio
+        // object for every punch/kick/hit. This reduces GC spikes during combat.
+        const soundPools = {};
+        const soundPoolIndex = {};
+        function getSoundFromPool(name) {
+            if (!soundPools[name]) {
+                soundPools[name] = Array.from({ length: 4 }, () => {
+                    const audio = new Audio(soundUrls[name]);
+                    audio.preload = 'auto';
+                    return audio;
+                });
+                soundPoolIndex[name] = 0;
+            }
+            const pool = soundPools[name];
+            const index = soundPoolIndex[name]++ % pool.length;
+            return pool[index];
+        }
         function playSound(name, volume = 0.55) {
             if (!soundEnabled || !soundUrls[name]) return;
-            const audio = new Audio(soundUrls[name]);
+            const audio = getSoundFromPool(name);
+            audio.pause();
+            try { audio.currentTime = 0; } catch (_) {}
             audio.volume = Math.max(0, Math.min(1, volume * Number(cfg.audio?.sfxVolume ?? 0.65)));
             void audio.play().catch(() => {});
         }
@@ -1152,7 +1171,7 @@
         const hud = document.createElement('div');
         hud.className = 'hud';
         hud.innerHTML = `
-            <span class="hud-label">Ananya Adventures</span>
+            <span class="hud-label">Super Ananya</span>
             <span class="level-name"></span>
             <span class="health-row"></span>
             <span class="enemy-count"></span>
@@ -1187,7 +1206,7 @@
         completionOverlay.className = 'completion-overlay is-hidden';
         completionOverlay.innerHTML = `
             <div class="stage-card">
-                <p class="stage-kicker">ANANYA ADVENTURES</p>
+                <p class="stage-kicker">Super Ananya</p>
                 <h2 class="stage-title">Ananya, you did it!</h2>
                 <div class="award-art" aria-label="Dyson Airwrap award"><svg width="100" height="180" viewBox="0 0 100 180" role="img" aria-label="Dyson Airwrap styling wand"><rect x="34" y="52" width="32" height="118" rx="16" fill="#b88b75"/><rect x="32" y="10" width="36" height="65" rx="12" fill="#dcad94"/><path d="M38 22h24M38 31h24M38 40h24M38 49h24M38 58h24" stroke="#633e46" stroke-width="3"/><circle cx="50" cy="100" r="6" fill="#5c394a"/><path d="M43 142h14M43 148h14M43 154h14" stroke="#633e46"/></svg></div><p class="stage-copy">Three stages. One final victory.<br>Your award: <strong>Dyson Airwrap</strong><br>Happy birthday, Ananya!</p>
             </div>
@@ -2195,9 +2214,18 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             if (mode === 'play' && !paused) {
-                for (let remaining = dt; remaining > 0; ) {
-                    const step = Math.min(1 / 120, remaining);
-                    worldTime += step; updatePlayer(step); updateLevelTransition(step); remaining -= step;
+                // Run game logic at up to 60 Hz and cap catch-up work.
+                // This prevents a slow frame from triggering a large burst of AI/physics
+                // updates that makes subsequent frames even slower (spiral of death).
+                let remaining = Math.min(dt, 1 / 20);
+                let substeps = 0;
+                while (remaining > 0.0001 && substeps < 3) {
+                    const step = Math.min(1 / 60, remaining);
+                    worldTime += step;
+                    updatePlayer(step);
+                    updateLevelTransition(step);
+                    remaining -= step;
+                    substeps++;
                 }
             }
             player.animTime += dt;
@@ -2356,20 +2384,22 @@
                     const edge = direction > 0 ? support.x + support.w : support.x;
                     const nearEdge = Math.abs(edge - front) < 34 + walkSpeed * dt;
                     const launch = 900;
-                    const candidates = platforms.filter(p => p !== support && p.y >= support.y - 210 && p.y <= support.y + 560).map(p => {
-                        const discriminant = launch * launch + 2 * gravity * (p.y - support.y);
-                        const flight = (launch + Math.sqrt(Math.max(0, discriminant))) / gravity;
-                        // Lead a moving landing surface rather than aiming where it is now.
-                        const landing = p.moving ? getPlatforms(worldTime + flight).find(next => next.id === p.id) : p;
-                        const landingX = Math.max(landing.x + 22, Math.min(landing.x + landing.w - enemy.w - 22, player.x));
-                        const velocity = (landingX - enemy.x) / flight;
-                        const score = Math.abs(landingX - player.x) + Math.abs(p.y - (player.y + player.h + 16)) * 1.2;
-                        return { p, flight, landingX, velocity, score };
-                    }).filter(c => c.p.w > enemy.w + 28 && Math.abs(c.velocity) <= 360);
-                    candidates.sort((a,b) => a.score - b.score);
-                    const currentScore = distance + Math.abs(support.y - (player.y + player.h + 16)) * 1.2;
-                    const target = candidates.find(c => c.score < currentScore - 35);
-                    if (nearEdge || Math.abs(player.y + player.h + 16 - support.y) > 60) {
+                    const needsRouteDecision = nearEdge || Math.abs(player.y + player.h + 16 - support.y) > 60;
+                    if (needsRouteDecision) {
+                        // Route search is relatively expensive. Only perform it when the
+                        // enemy actually needs to jump/change platforms instead of every tick.
+                        const candidates = platforms.filter(p => p !== support && p.y >= support.y - 210 && p.y <= support.y + 560).map(p => {
+                            const discriminant = launch * launch + 2 * gravity * (p.y - support.y);
+                            const flight = (launch + Math.sqrt(Math.max(0, discriminant))) / gravity;
+                            const landing = p.moving ? getPlatforms(worldTime + flight).find(next => next.id === p.id) : p;
+                            const landingX = Math.max(landing.x + 22, Math.min(landing.x + landing.w - enemy.w - 22, player.x));
+                            const velocity = (landingX - enemy.x) / flight;
+                            const score = Math.abs(landingX - player.x) + Math.abs(p.y - (player.y + player.h + 16)) * 1.2;
+                            return { p, flight, landingX, velocity, score };
+                        }).filter(c => c.p.w > enemy.w + 28 && Math.abs(c.velocity) <= 360);
+                        candidates.sort((a,b) => a.score - b.score);
+                        const currentScore = distance + Math.abs(support.y - (player.y + player.h + 16)) * 1.2;
+                        const target = candidates.find(c => c.score < currentScore - 35);
                         enemy.vx = nearEdge ? 0 : enemy.vx;
                         if (target && enemy.jumpCooldown <= 0) {
                             enemy.vy = -launch;
