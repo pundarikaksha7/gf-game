@@ -1,4 +1,4 @@
-# Ananya Adventures
+# GF-Game
 
 A browser platform brawler starring Ananya, with Anya and Vedika as helpers and Yash, Himank, and Rizzwan as rivals. Defeat boss Rizzwan at the end of stage three and reach the exit to receive the Dyson Airwrap award.
 
