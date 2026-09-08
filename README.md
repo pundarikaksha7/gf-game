@@ -1,6 +1,6 @@
 # GF-Game
 
-A browser platform brawler starring Ananya, with Anya and Vedika as helpers and Yash, Himank, and Rizzwan as rivals. Defeat boss Rizzwan at the end of stage three and reach the exit to receive the Dyson Airwrap award.
+A browser platform brawler starring Anhelper 1, with helper 1 and helper 2 as helpers and small boss, mid boss, and BOSS as rivals. Defeat boss BOSS at the end of stage three and reach the exit to receive the Dyson Airwrap award.
 
 ## Play locally
 
@@ -12,18 +12,18 @@ Move with A/D or arrow keys; Space jumps; J punches; K kicks; P pauses. Touch co
 
 | Drop | Effect | Duration |
 | --- | --- | --- |
-| Cat emoji — Cat Crew | Anya supplies ranged attacks; Vedika attacks nearby rivals | 24 seconds |
+| Cat emoji — Cat Crew | helper 1 supplies ranged attacks; helper 2 attacks nearby rivals | 24 seconds |
 | CFA book | Hold J/K to fire a 24-damage beam every 0.55 seconds | 18 seconds |
 | Kamikaze shot glass | Punch and kick damage ×1.8; mint punches and pink kicks | 14 seconds |
 
-Drops require one second before collection. Normal knockouts have an 8% powerup drop chance, capped at two drops per stage; no drop is guaranteed. Stages contain 14, 18, and 22 regular enemies respectively, plus the final Rizzwan boss. Recollecting refreshes the timer, without stacking damage. Timers freeze while paused and reset on death/restart or stage change. The phone-triggered bike sweep is unchanged.
+Drops require one second before collection. Normal knockouts have an 8% powerup drop chance, capped at two drops per stage; no drop is guaranteed. Stages contain 14, 18, and 22 regular enemies respectively, plus the final BOSS boss. Recollecting refreshes the timer, without stacking damage. Timers freeze while paused and reset on death/restart or stage change. The phone-triggered bike sweep is unchanged.
 
 ## Build and deploy
 
 1. Run `node tests/game.test.cjs` (Node.js required for regression tests only).
 2. Run `python3 scripts/build.py`.
 3. Open https://app.netlify.com/drop and sign in to your account.
-4. Drag the **dist folder** or **ananya-adventures.zip** onto the drop zone. The archive has `index.html` at its root.
+4. Drag the **dist folder** or **anhelper 1-adventures.zip** onto the drop zone. The archive has `index.html` at its root.
 5. Netlify gives you a hosted URL to share. For updates, rebuild, then upload the updated `dist` folder on the existing site's Deploys page.
 
 Official instructions: https://docs.netlify.com/start/quickstarts/netlify-drop-quickstart/
