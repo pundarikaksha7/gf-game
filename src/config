@@ -1,0 +1,150 @@
+{
+  "player": {
+    "startX": 224,
+    "startY": 968,
+    "moveSpeed": 400,
+    "jumpForce": 950,
+    "maxHealth": 5,
+    "invincibilityDuration": 0.85
+  },
+  "physics": {
+    "gravity": 1800
+  },
+  "level": {
+    "groundY": 1080,
+    "platformX": 500,
+    "platformY": 880,
+    "platformW": 256,
+    "skyColor": "#87CEEB",
+    "groundColor": "#6B8E23",
+    "lengthMultiplier": 1.2
+  },
+  "combat": {
+    "punchDamage": 12,
+    "kickDamage": 22,
+    "punchCooldown": 0.28,
+    "kickCooldown": 0.7
+  },
+  "enemies": {
+    "count": 6,
+    "smallHealth": 28,
+    "mediumHealth": 52,
+    "largeHealth": 88,
+    "speed": 120,
+    "aggressionRange": 104,
+    "smallDamage": 0.35,
+    "mediumDamage": 0.5,
+    "largeDamage": 0.75
+  },
+  "levels": [
+    {
+      "id": "college",
+      "name": "College Courtyard",
+      "shortName": "COLLEGE",
+      "background": "college_background",
+      "groundY": 1080,
+      "skyColor": "#87CEEB",
+      "groundColor": "#6B8E23",
+      "lengthMultiplier": 1,
+      "enemyCount": 6,
+      "startX": 200,
+      "startY": 900,
+      "platforms": [
+        {
+          "x": 500,
+          "y": 880,
+          "w": 256,
+          "h": 24
+        },
+        {
+          "x": 1120,
+          "y": 760,
+          "w": 300,
+          "h": 24
+        },
+        {
+          "x": 1700,
+          "y": 900,
+          "w": 240,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "id": "office",
+      "name": "Office Building",
+      "shortName": "OFFICE",
+      "background": "office_background",
+      "groundY": 1080,
+      "skyColor": "#9eb8cc",
+      "groundColor": "#495b70",
+      "lengthMultiplier": 1.25,
+      "enemyCount": 8,
+      "startX": 200,
+      "startY": 900,
+      "platforms": [
+        {
+          "x": 420,
+          "y": 840,
+          "w": 280,
+          "h": 24
+        },
+        {
+          "x": 980,
+          "y": 690,
+          "w": 360,
+          "h": 24
+        },
+        {
+          "x": 1580,
+          "y": 820,
+          "w": 300,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "id": "bar",
+      "name": "Neon Night Bar",
+      "shortName": "BAR",
+      "background": "bar_background",
+      "groundY": 1080,
+      "skyColor": "#241b42",
+      "groundColor": "#34253e",
+      "lengthMultiplier": 1.5,
+      "enemyCount": 10,
+      "startX": 200,
+      "startY": 900,
+      "platforms": [
+        {
+          "x": 520,
+          "y": 900,
+          "w": 280,
+          "h": 24
+        },
+        {
+          "x": 1180,
+          "y": 740,
+          "w": 320,
+          "h": 24
+        },
+        {
+          "x": 1920,
+          "y": 860,
+          "w": 360,
+          "h": 24
+        }
+      ]
+    }
+  ],
+  "hazards": {
+    "holeCount": 6,
+    "minHoleWidth": 140,
+    "maxHoleWidth": 240,
+    "fallDamage": 1
+  },
+  "audio": {
+    "sfxVolume": 0.65,
+    "musicVolume": 0.18
+  }
+}

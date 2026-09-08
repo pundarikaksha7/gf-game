@@ -1,0 +1,70 @@
+// Asset Map (Read-Only)
+// Edit assets in the Media tab.
+// Use these IDs alongside lib to reference assets in your code:
+//
+// Example: lib.getAsset["player_sprite"]
+
+const assets = {
+  "player_character": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/player_character_7dcf7b59-1df3-45dc-9e02-95aa87cdb997.webp",
+    "type": "image",
+    "aspect_ratio": [
+      920,
+      1318
+    ]
+  },
+  "enemy_small": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/enemy_small_1058de26-e6f8-40b1-b2ab-cf861bbb1fff.webp",
+    "type": "image",
+    "aspect_ratio": [
+      632,
+      1209
+    ]
+  },
+  "enemy_medium": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/enemy_medium_6ff813e3-c8f1-4ad9-b02f-582539d28877.webp",
+    "type": "image",
+    "aspect_ratio": [
+      728,
+      1210
+    ]
+  },
+  "enemy_large": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/enemy_large_9c6742fe-6f52-4bd2-a597-0b6401897d43.webp",
+    "type": "image",
+    "aspect_ratio": [
+      448,
+      1225
+    ]
+  },
+  "college_background": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/college_background_1f2c8fc9-a8e7-4c42-ab49-f36f969f027d.webp",
+    "type": "image",
+    "aspect_ratio": [
+      1264,
+      848
+    ]
+  },
+  "office_background": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/office_background_a8ad0562-eb97-4616-a905-c1479074dbbf.webp",
+    "type": "image",
+    "aspect_ratio": [
+      1264,
+      848
+    ]
+  },
+  "bar_background": {
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/bar_background_ee99fd47-637c-40d3-8edd-42daf0a6f5f2.webp",
+    "type": "image",
+    "aspect_ratio": [
+      1264,
+      848
+    ]
+  },
+  "punch_sfx": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/effect/punch_sfx_e8612e8d-e88c-40bd-9200-b69bff8572a2.mp3", "type": "audio" },
+  "kick_sfx": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/effect/kick_sfx_61bda66b-12e9-41f4-921d-bfa1219448ea.mp3", "type": "audio" },
+  "player_hurt_sfx": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/effect/player_hurt_sfx_194db6cb-a2ff-4f0f-8203-8ddd8613fdcb.mp3", "type": "audio" },
+  "enemy_defeat_sfx": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/effect/enemy_defeat_sfx_1c52d675-ee99-4bfd-90ed-292e31526953.mp3", "type": "audio" },
+  "hidden_phone_icon": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/hidden_phone_icon_6bdc5f74-f859-4220-ab96-bd37c986f4f9.webp", "type": "image", "aspect_ratio": [816, 623] },
+  "biker_motorcycle": { "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/biker_motorcycle_a4f69382-034b-4b86-bb29-7daf1a30de9a.webp", "type": "image", "aspect_ratio": [838, 811] }
+};
