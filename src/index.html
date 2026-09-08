@@ -2,7 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#10151f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Super Ananya">
+    <meta name="format-detection" content="telephone=no">
     <title>Super Ananya</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -380,6 +386,211 @@
         .combat-help { font-size: 12px; opacity: .85; }
         @media (hover: hover) and (pointer: fine) { .touch-controls { display: none; } }
         @media (max-height: 500px) { .hud { padding: 8px 12px; top: 8px; left: 8px; } .hud-label { font-size: 18px; } .attack-btn,.jump-btn { width: 64px; height: 64px; right: 18px; font-size: 16px; } .jump-btn { bottom: 22px; } .punch-btn { bottom: 98px; } .kick-btn { bottom: 174px; } .joystick-zone { bottom: 12px; left: 12px; width: 140px; height: 140px; } .joystick-base { width: 110px; height: 110px; } }
+
+
+        /* ── Landscape phone game mode ─────────────────────────────────────── */
+        html, body {
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            background: #10151f;
+        }
+        #game-world { min-height: 100dvh; min-width: 100dvw; }
+        canvas { touch-action: none; }
+
+        .mobile-only { display: none; }
+        .rotate-phone-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: max(28px, env(safe-area-inset-top)) max(28px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left));
+            box-sizing: border-box;
+            background: radial-gradient(circle at 50% 35%, #283765 0, #15192f 52%, #0b0f19 100%);
+            color: #fff;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+        }
+        .rotate-phone-card { max-width: 390px; }
+        .rotate-phone-icon { font-size: 72px; line-height: 1; animation: phoneTilt 1.8s ease-in-out infinite; }
+        .rotate-phone-title { margin: 18px 0 6px; font-size: 34px; color: #ffe27a; }
+        .rotate-phone-copy { margin: 0; font-size: 18px; line-height: 1.35; color: #e9f2ff; }
+        @keyframes phoneTilt { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(90deg); } }
+
+        .fullscreen-btn {
+            position: absolute;
+            z-index: 32;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,.28);
+            border-radius: 12px;
+            background: rgba(20,36,61,.88);
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 5px 18px rgba(0,0,0,.25);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        @media (pointer: coarse), (hover: none) {
+            .touch-controls { display: block !important; }
+        }
+
+        @media (pointer: coarse) and (orientation: portrait),
+               (hover: none) and (orientation: portrait) {
+            .rotate-phone-overlay { display: flex; }
+        }
+
+        @media (pointer: coarse) and (orientation: landscape),
+               (hover: none) and (orientation: landscape) {
+            body.mobile-landscape { background: #080d16; }
+            body.mobile-landscape #game-world {
+                width: 100dvw;
+                height: 100dvh;
+                min-height: 100dvh;
+                align-items: center;
+                justify-content: center;
+            }
+            body.mobile-landscape canvas {
+                width: 100dvw;
+                height: 100dvh;
+                max-width: 177.777dvh;
+                max-height: 56.25dvw;
+                box-shadow: none;
+            }
+
+            body.mobile-landscape .touch-controls {
+                inset: 0;
+                width: 100dvw;
+                height: 100dvh;
+                z-index: 22;
+            }
+
+            /* Left thumb: wide horizontal movement pad. */
+            body.mobile-landscape .joystick-zone {
+                left: max(10px, env(safe-area-inset-left));
+                bottom: max(8px, env(safe-area-inset-bottom));
+                width: min(31vw, 190px);
+                height: min(43vh, 170px);
+            }
+            body.mobile-landscape .joystick-base {
+                width: min(25vw, 142px);
+                height: min(25vw, 142px);
+                max-width: min(35vh, 142px);
+                max-height: min(35vh, 142px);
+                border-width: 2px;
+                background: rgba(255,255,255,.13);
+                border-color: rgba(255,255,255,.32);
+                box-shadow: inset 0 0 20px rgba(255,255,255,.04), 0 5px 20px rgba(0,0,0,.22);
+            }
+            body.mobile-landscape .joystick-knob {
+                width: 44%;
+                height: 44%;
+                border-width: 2px;
+                background: rgba(255,255,255,.58);
+                box-shadow: 0 4px 14px rgba(0,0,0,.22);
+            }
+
+            /* Right thumb: arcade diamond — jump is largest/lowest button. */
+            body.mobile-landscape .jump-btn,
+            body.mobile-landscape .attack-btn {
+                right: max(12px, env(safe-area-inset-right));
+                width: clamp(58px, 10.5vw, 78px);
+                height: clamp(58px, 10.5vw, 78px);
+                min-width: 0;
+                min-height: 0;
+                border-width: 2px;
+                font-size: clamp(12px, 2.1vw, 16px);
+                line-height: 1;
+                box-shadow: 0 5px 18px rgba(0,0,0,.28), inset 0 0 15px rgba(255,255,255,.08);
+                -webkit-tap-highlight-color: transparent;
+                touch-action: none;
+            }
+            body.mobile-landscape .jump-btn {
+                right: max(18px, calc(env(safe-area-inset-right) + 8px));
+                bottom: max(10px, env(safe-area-inset-bottom));
+                width: clamp(66px, 12vw, 88px);
+                height: clamp(66px, 12vw, 88px);
+                background: rgba(247,174,45,.88);
+            }
+            body.mobile-landscape .punch-btn {
+                right: max(92px, calc(env(safe-area-inset-right) + 92px));
+                bottom: max(42px, calc(env(safe-area-inset-bottom) + 42px));
+                background: rgba(238,92,126,.86);
+            }
+            body.mobile-landscape .kick-btn {
+                right: max(20px, calc(env(safe-area-inset-right) + 12px));
+                bottom: max(98px, calc(env(safe-area-inset-bottom) + 98px));
+                background: rgba(116,104,224,.88);
+            }
+
+            /* HUD is information-dense but gets out of the play field. */
+            body.mobile-landscape .hud {
+                top: max(6px, env(safe-area-inset-top));
+                left: max(8px, env(safe-area-inset-left));
+                max-width: min(48vw, 330px);
+                padding: 7px 10px;
+                border-radius: 10px;
+                background: linear-gradient(120deg, rgba(14,24,43,.82), rgba(14,24,43,.46));
+                box-shadow: 0 5px 18px rgba(0,0,0,.2);
+                backdrop-filter: blur(3px);
+            }
+            body.mobile-landscape .hud-label { font-size: clamp(14px, 2.3vw, 19px); }
+            body.mobile-landscape .level-name { margin-top: 0; font-size: clamp(11px, 1.8vw, 15px); }
+            body.mobile-landscape .health-row { margin-top: 2px; font-size: clamp(16px, 2.6vw, 21px); line-height: 20px; letter-spacing: 1px; }
+            body.mobile-landscape .enemy-count,
+            body.mobile-landscape .attack-state { font-size: clamp(10px, 1.6vw, 13px); margin-top: 1px; min-height: 0; }
+            body.mobile-landscape .combat-help { display: none; }
+            body.mobile-landscape .powerup-status { font-size: 10px; margin-top: 2px; }
+            body.mobile-landscape .powerup-notice {
+                top: max(6px, env(safe-area-inset-top));
+                bottom: auto;
+                max-width: 36vw;
+                padding: 7px 10px;
+                font-size: 10px;
+                border-radius: 9px;
+            }
+
+            body.mobile-landscape .mobile-pause {
+                top: max(6px, env(safe-area-inset-top)) !important;
+                right: max(56px, calc(env(safe-area-inset-right) + 56px)) !important;
+                width: 42px;
+                height: 42px;
+                padding: 0 !important;
+                border-radius: 12px !important;
+                font-size: 0 !important;
+            }
+            body.mobile-landscape .mobile-pause::after { content: 'Ⅱ'; font-size: 18px; font-weight: 700; }
+            body.mobile-landscape .fullscreen-btn {
+                display: flex;
+                top: max(6px, env(safe-area-inset-top));
+                right: max(8px, env(safe-area-inset-right));
+            }
+
+            body.mobile-landscape .stage-card,
+            body.mobile-landscape .game-over-card {
+                width: min(68vw, 520px);
+                max-height: 82dvh;
+                padding: 18px 22px;
+                border-width: 3px;
+                border-radius: 20px;
+                overflow-y: auto;
+            }
+            body.mobile-landscape .stage-title,
+            body.mobile-landscape .game-over-title { font-size: clamp(28px, 6vw, 46px); }
+            body.mobile-landscape .stage-kicker { font-size: clamp(13px, 2.2vw, 18px); }
+            body.mobile-landscape .stage-copy,
+            body.mobile-landscape .game-over-copy { margin-top: 9px; font-size: clamp(13px, 2.2vw, 18px); }
+            body.mobile-landscape .restart-btn { min-width: 190px; min-height: 56px; padding: 10px 18px; font-size: 20px; }
+        }
+
     </style>
 </head>
 <body>
@@ -398,6 +609,20 @@
         const gameWorld = document.getElementById('game-world');
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+        const mobileLandscapeQuery = window.matchMedia('(orientation: landscape) and (max-height: 620px)');
+        const updateMobileMode = () => {
+            document.body.classList.toggle('mobile-landscape', isTouchDevice && mobileLandscapeQuery.matches);
+        };
+        updateMobileMode();
+        if (mobileLandscapeQuery.addEventListener) mobileLandscapeQuery.addEventListener('change', updateMobileMode);
+        else if (mobileLandscapeQuery.addListener) mobileLandscapeQuery.addListener(updateMobileMode);
+        window.addEventListener('orientationchange', updateMobileMode);
+
+        const rotateOverlay = document.createElement('div');
+        rotateOverlay.className = 'rotate-phone-overlay';
+        rotateOverlay.innerHTML = '<div class="rotate-phone-card"><div class="rotate-phone-icon">📱</div><h2 class="rotate-phone-title">Turn it sideways</h2><p class="rotate-phone-copy">Super Ananya is made for landscape on phones. Rotate your phone for the full arcade controls 🎮</p></div>';
+        document.body.appendChild(rotateOverlay);
         const VIEW_W = 1280;
         const VIEW_H = 720;
         const WORLD_SCALE = VIEW_H / 1280;
@@ -1070,9 +1295,15 @@
         let joystickTouch = null;
         let jumpTouch = null;
 
+        function mobileHaptic(pattern = 12) {
+            if (!isTouchDevice || !navigator.vibrate) return;
+            try { navigator.vibrate(pattern); } catch (_) {}
+        }
+
         function createTouchControls() {
             touchControlsEl = document.createElement('div');
             touchControlsEl.className = 'touch-controls';
+            touchControlsEl.setAttribute('aria-label', 'Touch game controls');
 
             // Joystick
             const jZone = document.createElement('div');
@@ -1107,6 +1338,7 @@
                 const press = e => {
                     e.preventDefault();
                     pendingAttack = type;
+                    mobileHaptic(type === 'kick' ? 18 : 10);
                     button.classList.add('pressed');
                 };
                 const release = () => button.classList.remove('pressed');
@@ -1125,7 +1357,7 @@
             jZone.addEventListener('touchcancel', handleJoystickEnd, { passive: false });
 
             // Jump touch
-            jumpBtn.addEventListener('touchstart', e => { e.preventDefault(); jumpPressed = true; }, { passive: false });
+            jumpBtn.addEventListener('touchstart', e => { e.preventDefault(); jumpPressed = true; mobileHaptic(9); }, { passive: false });
             jumpBtn.addEventListener('touchend', e => { e.preventDefault(); jumpPressed = false; jumpConsumed = false; }, { passive: false });
             jumpBtn.addEventListener('touchcancel', e => { jumpPressed = false; jumpConsumed = false; }, { passive: false });
         }
@@ -1773,7 +2005,7 @@
                     const spriteH = enemy.boss ? 210 : enemy.h;
                     const spriteW = image.naturalWidth && image.naturalHeight ? spriteH * (image.naturalWidth / image.naturalHeight) : enemy.w + 16;
                     ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
+                    ctx.imageSmoothingQuality = isTouchDevice ? 'medium' : 'high';
                     ctx.drawImage(image, sx + enemy.w / 2 - spriteW / 2, sy + enemy.h + 16 - spriteH + motionBob, spriteW, spriteH);
                 } else {
                     drawEnemyFallback(enemy, sx, sy + motionBob, spec);
@@ -2154,7 +2386,7 @@
                     : 72;
                 const drawX = px + player.w / 2 - spriteW / 2;
                 ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
+                    ctx.imageSmoothingQuality = isTouchDevice ? 'medium' : 'high';
                 ctx.drawImage(playerImage, drawX, drawY + player.h + 16 - spriteH + motionBob, spriteW, spriteH);
             } else {
                 ctx.fillStyle = '#ff6b8a';
@@ -2198,10 +2430,27 @@
         let paused = false;
         const pauseButton = document.createElement('button');
         pauseButton.textContent = 'Pause / Resume';
+        pauseButton.className = 'mobile-pause';
         pauseButton.setAttribute('aria-label', 'Pause or resume game');
         pauseButton.style.cssText = 'position:absolute;right:16px;top:16px;z-index:30;background:#14243de6;color:white;border:1px solid #ffffff55;border-radius:10px;padding:12px;cursor:pointer';
         pauseButton.addEventListener('click', () => { paused = !paused; });
         gameWorld.appendChild(pauseButton);
+        const fullscreenButton = document.createElement('button');
+        fullscreenButton.className = 'fullscreen-btn mobile-only';
+        fullscreenButton.type = 'button';
+        fullscreenButton.setAttribute('aria-label', 'Enter fullscreen');
+        fullscreenButton.textContent = '⛶';
+        fullscreenButton.addEventListener('pointerdown', async e => {
+            e.preventDefault();
+            mobileHaptic(10);
+            try {
+                if (!document.fullscreenElement && gameWorld.requestFullscreen) {
+                    await gameWorld.requestFullscreen();
+                    if (screen.orientation?.lock) { try { await screen.orientation.lock('landscape'); } catch (_) {} }
+                } else if (document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();
+            } catch (_) {}
+        });
+        gameWorld.appendChild(fullscreenButton);
         window.addEventListener("blur", () => { paused = true; Object.keys(keys).forEach(k => keys[k] = false); joystickX = 0; jumpPressed = false; });
         window.addEventListener("keydown", e => { if (e.code === "KeyP" && !e.repeat) paused = !paused; });
 
