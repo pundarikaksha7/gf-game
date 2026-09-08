@@ -46,7 +46,7 @@
       "skyColor": "#87CEEB",
       "groundColor": "#6B8E23",
       "lengthMultiplier": 1,
-      "enemyCount": 6,
+      "enemyCount": 15,
       "startX": 200,
       "startY": 900,
       "platforms": [
@@ -79,7 +79,7 @@
       "skyColor": "#9eb8cc",
       "groundColor": "#495b70",
       "lengthMultiplier": 1.25,
-      "enemyCount": 8,
+      "enemyCount": 18,
       "startX": 200,
       "startY": 900,
       "platforms": [
@@ -112,7 +112,7 @@
       "skyColor": "#241b42",
       "groundColor": "#34253e",
       "lengthMultiplier": 1.5,
-      "enemyCount": 10,
+      "enemyCount": 22,
       "startX": 200,
       "startY": 900,
       "platforms": [

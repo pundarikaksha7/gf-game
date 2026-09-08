@@ -815,7 +815,7 @@
                 enemy.vy = -230;
                 addDefeatBurst(enemy);
                 playSound('defeat', 0.62);
-                if (!enemy.boss && (levelDropCount < 2 && Math.random() < .25)) {
+                if (!enemy.boss && (levelDropCount < 2 && Math.random() < .08)) {
                     const kind = currentLevelIndex === 0 ? 'cat' : currentLevelIndex === 1 ? 'cfa' : 'blue';
                     dropPowerup(kind, enemy);
                     levelDropCount++;
@@ -2473,7 +2473,8 @@
             if (!enemySpawned) spawnEnemies();
             // The exit is a hard progress checkpoint. Reaching it must never be
             // blocked by an AI actor stranded behind a pit or on a lift.
-            if (player.x + player.w >= getLevelLength() - 180 && exitUnlocked && (currentLevelIndex !== 2 || bossDefeated)) {
+            if (player.x + player.w >= getLevelLength() - 180 && (currentLevelIndex !== 2 || bossDefeated)) {
+                exitUnlocked = true;
                 startLevelTransition();
                 return;
             }
