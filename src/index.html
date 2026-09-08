@@ -902,7 +902,7 @@
         const enemyTypes = {
             small: { name: 'Yash', w: 48, h: 92, healthKey: 'smallHealth', damageKey: 'smallDamage', speedScale: 1.18, attackDamage: 0.35, attackCooldown: 0.95, color: '#e45c52' },
             medium: { name: 'Himank', w: 58, h: 102, healthKey: 'mediumHealth', damageKey: 'mediumDamage', speedScale: 1, attackDamage: 0.5, attackCooldown: 1.08, color: '#2a9d8f' },
-            large: { name: 'angry babu', w: 62, h: 116, healthKey: 'largeHealth', damageKey: 'largeDamage', speedScale: 0.76, attackDamage: 0.75, attackCooldown: 1.3, color: '#563267' }
+            large: { name: 'Roshan', w: 62, h: 116, healthKey: 'largeHealth', damageKey: 'largeDamage', speedScale: 0.76, attackDamage: 0.75, attackCooldown: 1.3, color: '#563267' }
         };
         let enemies = [];
         let healthPickups = [];
@@ -1004,7 +1004,7 @@
             }
             if (currentLevelIndex === 2) {
                 const end = getLevelLength();
-                boss = { ...enemies.find(e => e.type === 'large'), id: 'boss-angry babu', boss: true,
+                boss = { ...enemies.find(e => e.type === 'large'), id: 'boss-Roshan', boss: true,
                     x: end - 330, y: Number(level.groundY) - 236, w: 140, h: 220,
                     health: 480, maxHealth: 480, awakened: false, onGround: true,
                     phase: 'approach', timer: 1, attackNumber: 0, healthDrop: false, support: null };
@@ -1480,7 +1480,7 @@
             }
             const remaining = enemies.filter(enemy => enemy.defeatTimer <= 0).length;
             enemyCountEl.textContent = boss && boss.awakened && boss.health > 0
-                ? `FINAL BOSS · angry babu ${Math.ceil(boss.health)}/${boss.maxHealth} · Jump to dodge`
+                ? `FINAL BOSS · Roshan ${Math.ceil(boss.health)}/${boss.maxHealth} · Jump to dodge`
                 : exitUnlocked
                 ? `Route clear — reach the EXIT →  ·  ${currentLevelIndex + 1}/3`
                 : `Reach the exit →  ·  ${remaining} rivals  ·  ${Math.min(100, Math.round(player.x / (getLevelLength() - 180) * 100))}%`;
@@ -1649,7 +1649,7 @@
             transitionTitleEl.textContent = currentLevelIndex < 2 ? `LEVEL ${currentLevelIndex + 1} CLEAR!` : 'ALL LEVELS CLEAR!';
             transitionCopyEl.textContent = currentLevelIndex < 2
                 ? `Get ready for ${getLevelConfig(currentLevelIndex + 1).name}.`
-                : 'angry babu defeated. Your Dyson Airwrap awaits!';
+                : 'Roshan defeated. Your Dyson Airwrap awaits!';
             levelTransitionOverlay.classList.remove('is-hidden');
         }
 
@@ -2016,7 +2016,7 @@
 
                 if (!defeated) {
                     ctx.font = '700 16px Inter'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
-                    ctx.fillText(enemy.boss ? 'angry babu · FINAL BOSS' : spec.name, sx + enemy.w / 2, sy - 23);
+                    ctx.fillText(enemy.boss ? 'Roshan · FINAL BOSS' : spec.name, sx + enemy.w / 2, sy - 23);
                     const barW = Math.max(48, enemy.w + 12);
                     const barX = sx + enemy.w / 2 - barW / 2;
                     const barY = sy - 14;
@@ -2556,7 +2556,7 @@
             const warning = boss.phase.endsWith('windup');
             ctx.save(); ctx.textAlign = 'center'; ctx.font = '700 24px Inter';
             ctx.fillStyle = boss.phase === 'recover' ? '#78f7bd' : '#ffbf75';
-            const label = boss.phase === 'charge-windup' ? 'SHOULDER RUSH · JUMP!' : boss.phase === 'slam-windup' ? 'GROUND SLAM · GET AIRBORNE!' : boss.phase === 'recover' ? 'EXPOSED · STRIKE NOW!' : boss.health <= boss.maxHealth / 2 ? 'angry babu · ENRAGED' : 'angry babu';
+            const label = boss.phase === 'charge-windup' ? 'SHOULDER RUSH · JUMP!' : boss.phase === 'slam-windup' ? 'GROUND SLAM · GET AIRBORNE!' : boss.phase === 'recover' ? 'EXPOSED · STRIKE NOW!' : boss.health <= boss.maxHealth / 2 ? 'Roshan · ENRAGED' : 'Roshan';
             ctx.fillText(label, sx + boss.w / 2, boss.y - 70);
             if (warning || boss.phase === 'slam') {
                 ctx.fillStyle = 'rgba(255,90,80,.28)';
